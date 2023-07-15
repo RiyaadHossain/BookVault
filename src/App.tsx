@@ -1,7 +1,12 @@
 import "./App.css";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
-  return <h1 className="btn btn-outline btn-primary">Hello World!</h1>;
+  return (
+    <>
+      <MainLayout />
+    </>
+  );
 }
 
 export default App;
