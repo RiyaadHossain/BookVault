@@ -1,8 +1,8 @@
 export default function Navbar() {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-300 shadow-lg">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+        <a className="btn btn-ghost font-mono text-xl">BookVault</a>
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
@@ -41,7 +41,7 @@ export default function Navbar() {
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
             </div>
           </label>
           <ul
