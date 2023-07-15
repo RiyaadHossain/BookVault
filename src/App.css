@@ -5,3 +5,7 @@
 .section_title{
     @apply text-primary text-3xl text-center font-semibold mb-6
 }
+
+.page_main{
+    @apply py-12
+}

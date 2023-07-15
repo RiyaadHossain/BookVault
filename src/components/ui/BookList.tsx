@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import BookCard from "../reuseable/BookCard";
 
 export default function BookList() {
   const books = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const navigate = useNavigate();
 
   return (
     <div className="_section">
@@ -10,6 +12,14 @@ export default function BookList() {
         {books.map((book) => (
           <BookCard book={book} />
         ))}
+      </div>
+      <div className="text-center mt-5">
+        <button
+          onClick={() => navigate("/all-books")}
+          className="btn btn-secondary"
+        >
+          View All Books
+        </button>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import UpdateBook from "../pages/UpdateBook";
 import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 import BookList from "../components/ui/BookList";
+import BookDetails from "../pages/BookDetails";
 
 const routes = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const routes = createBrowserRouter([
       {
         path: "/all-books",
         element: <AllBooks />,
+      },
+      {
+        path: "/book-details",
+        element: <BookDetails />,
       },
       {
         path: "/add-book",

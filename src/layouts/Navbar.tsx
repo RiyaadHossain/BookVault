@@ -1,8 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <div className="navbar bg-base-300 shadow-lg">
       <div className="flex-1">
-        <a className="btn btn-ghost font-mono text-xl">BookVault</a>
+        <a
+          onClick={() => navigate("/")}
+          className="btn btn-ghost font-mono text-xl"
+        >
+          BookVault
+        </a>
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">

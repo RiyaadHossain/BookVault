@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function SignIn() {
+  const navigate = useNavigate();
+
   return (
     <div className="flex items-center justify-center h-screen my-8 md:my-0">
       <div className="card lg:card-side bg-base-200 shadow-xl">
@@ -36,14 +40,14 @@ export default function SignIn() {
               />
             </div>
             <div className="mt-3">
-              <button className="btn w-full btn-sm btn-primary">
-                Sign In
-              </button>
+              <button className="btn w-full btn-sm btn-primary">Sign In</button>
             </div>
           </form>
           <p className="text-sm">
             Don't have any account,{" "}
-            <span className="link link-secondary">sign up</span>
+            <span onClick={() => navigate("/")} className="link link-secondary">
+              sign up
+            </span>
           </p>
         </div>
       </div>
