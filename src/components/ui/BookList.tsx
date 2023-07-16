@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import BookCard from "../reuseable/BookCard";
+import BookCardWithImg from "../reuseable/BookCardWithImg";
 
 export default function BookList() {
   const books = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -10,7 +10,7 @@ export default function BookList() {
       <h2 className="section_title">Recent Books</h2>
       <div className="flex flex-wrap gap-5 items-center">
         {books.map((book) => (
-          <BookCard book={book} />
+          <BookCardWithImg book={book} />
         ))}
       </div>
       <div className="text-center mt-5">
