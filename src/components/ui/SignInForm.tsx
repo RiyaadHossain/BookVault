@@ -13,12 +13,12 @@ export default function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
-    // reset,
+    reset,
   } = useForm<SignInFormInputs>();
 
   const onSubmit = (data: SignInFormInputs) => {
     dispatch(logInUser(data));
-    // reset();
+    reset();
   };
 
   return (

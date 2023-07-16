@@ -1,9 +1,14 @@
+import { useParams } from "react-router-dom";
 import Reviews from "../components/ui/Reviews";
+import { useGetBookQuery } from "../redux/features/book/bookApi";
 
 export default function BookDetails() {
+  const { id } = useParams();
+  const { data: book } = useGetBookQuery(id!);
+
   return (
     <div className="page_main">
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6 mb-8">
         <div className="">
           <img
             className="h-80 rounded-sm"
@@ -12,19 +17,20 @@ export default function BookDetails() {
           />
         </div>
         <div>
-          <div className="flex items-end justify-between">
-            <h4 className="text-xl text-secondary font-semibold">
-              Automic Habits{" "}
-              <span className="text-sm text-slate-500 font-medium">
-                by James Clear
-              </span>
-            </h4>
-            <p className="text-sm">22 March 2003</p>
-          </div>
-          <span className="badge badge-info">Self-Help</span>
+          <h4 className="text-xl text-secondary font-semibold">
+            {book?.title}{" "}
+            <span className="text-sm text-slate-500 font-medium">
+              by {book?.author}
+            </span>
+          </h4>
+          <span className="badge badge-info">{book?.genre}</span>
+          <p className="text-sm my-2">
+            <span className="font-semibold">Publication Date: </span>
+            {book?.publicationDate}
+          </p>
         </div>
-        <Reviews />
       </div>
+      <Reviews />
     </div>
   );
 }
