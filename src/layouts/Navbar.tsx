@@ -1,7 +1,31 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../lib/firebase";
+import { setUser } from "../redux/features/user/userSlice";
+import { useEffect } from "react";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
+  const path = location?.state?.path?.pathname || "/";
+
+  const handleLogOut = () => {
+    signOut(auth);
+    dispatch(setUser(null));
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch(setUser(user?.email));
+    });
+
+    if (user.email) {
+      navigate(path, { replace: true });
+    }
+  }, [dispatch, user.email, path, navigate]);
 
   return (
     <div className="navbar bg-base-300 shadow-lg">
@@ -47,30 +71,45 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+        {user.email ? (
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <div className="w-10 rounded-full">
+                <img
+                  src="https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg"
+                  alt="profile-img"
+                />
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
+            >
+              <li>
+                <a className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li
+                onClick={handleLogOut}
+                className="btn btn-outline btn-error mt-2 "
+              >
+                <a>Logout</a>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <button
+            onClick={() => navigate("/sign-in")}
+            className="btn btn-success btn-sm"
           >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div>
+            Sign In
+          </button>
+        )}
       </div>
     </div>
   );
