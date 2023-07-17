@@ -27,7 +27,7 @@ export default function AddBook() {
   useEffect(() => {
     if (isSuccess)
       toast.success("Successfully added the book 📘", { id: "addBook" });
-    if (isError) toast.error("Something went wrong 😔", { id: "error" });
+    if (isError) toast.error("Failed to add the book 😔", { id: "error" });
   }, [isSuccess, isError]);
 
   return (

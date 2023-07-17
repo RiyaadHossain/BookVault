@@ -58,7 +58,7 @@ export default function BookDetails() {
         )}
       </div>
 
-      <Reviews />
+      <Reviews id={id} />
       {showModal && <DeleteModal book={book} setShowModal={setShowModal} />}
     </div>
   );

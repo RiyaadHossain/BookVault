@@ -3,10 +3,10 @@ import { api } from "../../api/apiSlice";
 const reviewApi = api.injectEndpoints({
   endpoints: (builder) => ({
     postReview: builder.mutation({
-      query: ({ id, data }) => ({
+      query: ({ id, payload }) => ({
         url: `/review/${id}`,
         method: "POST",
-        body: data,
+        body: payload,
       }),
       invalidatesTags: ["Reviews"],
     }),
@@ -25,7 +25,7 @@ const reviewApi = api.injectEndpoints({
     deleteReview: builder.mutation({
       query: ({ id, email }) => ({
         url: `/review/${id}/user/${email}`,
-        method: "DELETE",
+        method: "DELETE"
       }),
       invalidatesTags: ["Reviews"],
     }),

@@ -8,7 +8,7 @@ interface SignInFormInputs {
 }
 
 export default function SignInForm() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -33,7 +33,7 @@ export default function SignInForm() {
           className="input input-bordered w-full max-w-xs"
           {...register("email", { required: "Email is required" })}
         />
-        {errors.email && <p>{errors.email.message}</p>}
+        {errors.email && <p className="form_error">{errors.email.message}</p>}
       </div>
       <div className="form-control w-full max-w-xs">
         <label className="label">
@@ -45,7 +45,9 @@ export default function SignInForm() {
           className="input input-bordered w-full max-w-xs"
           {...register("password", { required: "Password is required" })}
         />
-        {errors.password && <p>{errors.password.message}</p>}
+        {errors.password && (
+          <p className="form_error">{errors.password.message}</p>
+        )}
       </div>
       <div className="mt-3">
         <button className="btn w-full btn-sm btn-primary">Sign In</button>

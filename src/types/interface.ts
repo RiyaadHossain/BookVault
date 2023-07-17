@@ -8,6 +8,11 @@ export interface IBook {
 }
 
 export interface IWishlist {
-  email: string
-  books: IBook[]
+  email: string;
+  books: IBook[];
+}
+
+export interface IReview {
+  userEmail: string;
+  review: string;
 }
