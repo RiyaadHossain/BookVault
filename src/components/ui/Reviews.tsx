@@ -9,6 +9,7 @@ import {
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { IReview } from "../../types/interface";
+import { Link } from "react-router-dom";
 
 interface ReviewsProp {
   id: string | undefined;
@@ -59,7 +60,10 @@ export default function Reviews({ id }: ReviewsProp) {
               className="resize-none textarea textarea-primary w-[400px]"
               {...register("review", { required: "Review is required" })}
             ></textarea>{" "}
-            <button disabled={userReviewd} className="btn btn-sm btn-primary">
+            <button
+              disabled={userReviewd || !user?.email}
+              className="btn btn-sm btn-primary"
+            >
               Submit
             </button>
           </div>
@@ -68,6 +72,14 @@ export default function Reviews({ id }: ReviewsProp) {
           )}
           {userReviewd && (
             <p className="form_error">User can't add more than one review</p>
+          )}
+          {!user?.email && (
+            <div className="flex gap-2 items-center">
+              <p className="form_error">Please sign in to post review</p>
+              <Link to="/sign-in" className="text-xs link link-info">
+                Sign In
+              </Link>
+            </div>
           )}
         </form>
         {reviewsData?.reviews?.map((review: IReview) => (
