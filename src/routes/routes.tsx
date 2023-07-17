@@ -8,6 +8,7 @@ import SignIn from "../pages/SignIn";
 import BookList from "../components/ui/BookList";
 import BookDetails from "../pages/BookDetails";
 import PrivateRoute from "./PrivateRoute";
+import ReadlingList from "../pages/ReadlingList";
 
 const routes = createBrowserRouter([
   {
@@ -31,6 +32,14 @@ const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddBook />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/reading-list/:email",
+        element: (
+          <PrivateRoute>
+            <ReadlingList />
           </PrivateRoute>
         ),
       },

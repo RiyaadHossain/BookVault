@@ -1,4 +1,5 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
@@ -7,8 +8,11 @@ import { useEffect } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { FaClipboardList } from "react-icons/fa6";
 import { useGetWishlistsQuery } from "../redux/features/wishlist/wishlistApi";
+import { useGetBooklistsQuery } from "../redux/features/readinglist/readinglist";
 
 export default function Navbar() {
+  const [wishlistOpen, setWishlistOpen] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -21,6 +25,8 @@ export default function Navbar() {
     signOut(auth);
     dispatch(setUser(null));
   };
+
+  const { data: readingLists } = useGetBooklistsQuery(user?.email!);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -44,15 +50,24 @@ export default function Navbar() {
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
-          <label tabIndex={11} className="btn btn-ghost btn-circle">
+          <Link
+            to={`/reading-list/${user?.email}`}
+            className="btn btn-ghost btn-circle"
+            onClick={() => setWishlistOpen(false)}
+          >
             <div className="indicator">
               <FaClipboardList className="text-[1.30rem] text-info" />
               <span className="badge bg-neutral badge-sm indicator-item">
-                2
+                {readingLists?.readingPlan?.length || 0}
               </span>
             </div>
-          </label>
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
+          </Link>
+
+          <label
+            tabIndex={0}
+            className="btn btn-ghost btn-circle"
+            onClick={() => setWishlistOpen(!wishlistOpen)}
+          >
             <div className="indicator">
               <AiFillHeart className="text-2xl text-error" />
               <span className="badge bg-neutral badge-sm indicator-item">
@@ -60,31 +75,22 @@ export default function Navbar() {
               </span>
             </div>
           </label>
-          <div
-            tabIndex={11}
-            className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-200 shadow"
-          >
-            <div className="card-body">
-              <span className="font-bold text-lg">
-                {wishlists?.total || 0} Items
-              </span>
-              {
-                // wishlists?.books?.map()
-              }
-            </div>
-          </div>
-          <div
-            tabIndex={0}
-            className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-200 shadow"
-          >
-            <div className="card-body">
-              <span className="font-bold text-lg">8 Items</span>
-              <span className="text-info">Subtotal: $999</span>
-              <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
+          {wishlistOpen && (
+            <div
+              tabIndex={0}
+              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-200 shadow"
+            >
+              <div className="card-body">
+                <span className="font-bold text-lg">5 Items</span>
+                <span className="text-info">Subtotal: $999</span>
+                <div className="card-actions">
+                  <button className="btn btn-primary btn-block">
+                    View cart
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
         {user.email ? (
           <div className="dropdown dropdown-end">

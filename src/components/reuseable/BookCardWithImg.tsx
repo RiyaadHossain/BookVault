@@ -14,6 +14,11 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../redux/features/wishlist/wishlistSlice";
+import {
+  useAddToBooklistMutation,
+  useGetBooklistsQuery,
+} from "../../redux/features/readinglist/readinglist";
+import { toast } from "react-hot-toast";
 
 export default function BookCardWithImg({ book }: { book: IBook }) {
   const navigate = useNavigate();
@@ -22,6 +27,8 @@ export default function BookCardWithImg({ book }: { book: IBook }) {
   const { data: wishlists } = useGetWishlistsQuery(user.email!);
   const [addToWishlistAPI] = useAddToWishlistMutation();
   const [removeFromWishlistAPI] = useRemoveFromWishlistsMutation();
+  const { data: readinglists } = useGetBooklistsQuery(user.email!);
+  const [addToReadingList] = useAddToBooklistMutation();
 
   const onAddWishlist = () => {
     const payload = { userEmail: user.email, book: book };
@@ -31,7 +38,7 @@ export default function BookCardWithImg({ book }: { book: IBook }) {
   };
 
   const onRemoveFromWishlist = () => {
-    const payload = {email: user?.email, bookId: book?._id};
+    const payload = { email: user?.email, bookId: book?._id };
     dispatch(removeFromWishlist(book));
     removeFromWishlistAPI(payload);
     // ToDo: Toast
@@ -40,7 +47,24 @@ export default function BookCardWithImg({ book }: { book: IBook }) {
   const wishlisted = wishlists?.books?.find(
     (wishlist: IBook) => wishlist?._id === book?._id
   );
-  
+
+  const onAddReadinglist = () => {
+    const payload = { userEmail: user.email, book };
+    addToReadingList(payload);
+    toast.success(`Successfully, ${book.title} added to booklist`);
+  };
+
+  const onUpdateReadinglist = () => {
+    toast("Already added to wishlist!", {
+      icon: "😀",
+      style: { background: "#3c3c3c", color: "white" },
+    });
+  };
+
+  const readinglisted = readinglists?.readingPlan?.find(
+    (readinglist: IBook) => readinglist?._id === book?._id
+  );
+
   return (
     <div className="card w-80 bg-base-200 shadow-xl hover:-translate-y-2 transition-transform">
       <figure>
@@ -52,8 +76,11 @@ export default function BookCardWithImg({ book }: { book: IBook }) {
       <div className="card-body">
         <div className=" flex justify-end">
           <button className="btn btn-circle text-info text-2xl">
-            <HiOutlineClipboardList />
-            {/* <FaClipboardList /> */}
+            {readinglisted ? (
+              <FaClipboardList onClick={onUpdateReadinglist} />
+            ) : (
+              <HiOutlineClipboardList onClick={onAddReadinglist} />
+            )}
           </button>
           <button className="btn btn-circle text-error text-2xl">
             {wishlisted ? (
