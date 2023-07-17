@@ -24,6 +24,7 @@ export default function Navbar() {
   const handleLogOut = () => {
     signOut(auth);
     dispatch(setUser(null));
+    window.location.reload()
   };
 
   const { data: readingLists } = useGetBooklistsQuery(user?.email!);

@@ -13,6 +13,7 @@ export default function BookDetails() {
   const navigate = useNavigate();
   const { data: book } = useGetBookQuery(id!);
   const { user } = useAppSelector((state) => state.user);
+  const verifiedUser = user?.email && book?.addedBy === user?.email;
 
   return (
     <div className="page_main">
@@ -36,26 +37,26 @@ export default function BookDetails() {
             <span className="font-semibold">Published On: </span>
             {book?.publicationDate}
           </p>
+          {verifiedUser && (
+            <div className="flex items-center gap-x-2 mt-8">
+              <h4 className="font-semibold">Action Center :</h4>
+              <button
+                onClick={() => navigate(`/update-book/${book._id}`)}
+                className="btn btn-sm bg-cyan-700 tooltip"
+                data-tip="Update Book"
+              >
+                <FaPencil />
+              </button>
+              <button
+                onClick={() => setShowModal(!showModal)}
+                className="btn btn-sm bg-red-700 tooltip"
+                data-tip="Delete Book"
+              >
+                <FaDeleteLeft className="" />
+              </button>
+            </div>
+          )}
         </div>
-        {user.email === book?.addedBy && (
-          <div className="flex items-center gap-x-2">
-            <h4 className="font-semibold">Action Center :</h4>
-            <button
-              onClick={() => navigate(`/update-book/${book._id}`)}
-              className="btn btn-sm bg-cyan-700 tooltip"
-              data-tip="Update Book"
-            >
-              <FaPencil />
-            </button>
-            <button
-              onClick={() => setShowModal(!showModal)}
-              className="btn btn-sm bg-red-700 tooltip"
-              data-tip="Delete Book"
-            >
-              <FaDeleteLeft className="" />
-            </button>
-          </div>
-        )}
       </div>
 
       <Reviews id={id} />

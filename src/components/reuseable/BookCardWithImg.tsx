@@ -34,14 +34,14 @@ export default function BookCardWithImg({ book }: { book: IBook }) {
     const payload = { userEmail: user.email, book: book };
     dispatch(addToWishlist(book));
     addToWishlistAPI(payload);
-    // ToDo: Toast
+    toast.success(`Successfully, ${book.title} added to wishlist`);
   };
 
   const onRemoveFromWishlist = () => {
     const payload = { email: user?.email, bookId: book?._id };
     dispatch(removeFromWishlist(book));
     removeFromWishlistAPI(payload);
-    // ToDo: Toast
+    toast.success(`Successfully, ${book.title} removed from wishlist`);
   };
 
   const wishlisted = wishlists?.books?.find(
@@ -74,22 +74,24 @@ export default function BookCardWithImg({ book }: { book: IBook }) {
         />
       </figure>
       <div className="card-body">
-        <div className=" flex justify-end">
-          <button className="btn btn-circle text-info text-2xl">
-            {readinglisted ? (
-              <FaClipboardList onClick={onUpdateReadinglist} />
-            ) : (
-              <HiOutlineClipboardList onClick={onAddReadinglist} />
-            )}
-          </button>
-          <button className="btn btn-circle text-error text-2xl">
-            {wishlisted ? (
-              <AiFillHeart onClick={onRemoveFromWishlist} />
-            ) : (
-              <AiOutlineHeart onClick={onAddWishlist} />
-            )}
-          </button>
-        </div>
+        {user?.email && (
+          <div className=" flex justify-end">
+            <button className="btn btn-circle text-info text-2xl">
+              {readinglisted ? (
+                <FaClipboardList onClick={onUpdateReadinglist} />
+              ) : (
+                <HiOutlineClipboardList onClick={onAddReadinglist} />
+              )}
+            </button>
+            <button className="btn btn-circle text-error text-2xl">
+              {wishlisted ? (
+                <AiFillHeart onClick={onRemoveFromWishlist} />
+              ) : (
+                <AiOutlineHeart onClick={onAddWishlist} />
+              )}
+            </button>
+          </div>
+        )}
         <h2 className="card-title">{book.title.slice(0, 23)}</h2>
         <span className="badge badge-secondary">{book.author}</span>
 
