@@ -4,7 +4,8 @@ import { BsArrowReturnRight } from "react-icons/bs";
 import { useAppSelector } from "../../redux/hook";
 import { useDeleteReviewMutation } from "../../redux/features/review/reviewApi";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import UpdateReviewModal from "./UpdateReviewModal";
 
 interface IReviewProps {
   bookId: string | undefined;
@@ -16,6 +17,7 @@ export default function Review({ reviewDetails, bookId }: IReviewProps) {
   const userValidation = user?.email === reviewDetails?.userEmail;
 
   const [deleteReview, { isSuccess, isError }] = useDeleteReviewMutation();
+  const [updateReviewModal, setUpdateReviewModal] = useState(false);
 
   const onDeleteReview = () => {
     const payload = {
@@ -31,7 +33,7 @@ export default function Review({ reviewDetails, bookId }: IReviewProps) {
       toast.success("Successfully deleted the book 📘", { id: "addBook" });
     if (isError) toast.error("Failed to delete the book 😔", { id: "error" });
   }, [isSuccess, isError]);
-
+  console.log(reviewDetails)
   return (
     <div className="mt-6">
       <div className="flex justify-between items-center">
@@ -41,6 +43,7 @@ export default function Review({ reviewDetails, bookId }: IReviewProps) {
         {userValidation && (
           <div className="flex items-center gap-2">
             <button
+              onClick={() => setUpdateReviewModal(true)}
               className="btn btn-sm bg-cyan-700 tooltip"
               data-tip="Update Review"
             >
@@ -60,6 +63,13 @@ export default function Review({ reviewDetails, bookId }: IReviewProps) {
         <BsArrowReturnRight className="text-lg text-slate-400" />
         <p className="text-slate-300">{reviewDetails?.review}</p>
       </div>
+      {updateReviewModal && (
+        <UpdateReviewModal
+          setUpdateReviewModal={setUpdateReviewModal}
+          reviewDetails={reviewDetails}
+          bookId={bookId}
+        />
+      )}
     </div>
   );
 }

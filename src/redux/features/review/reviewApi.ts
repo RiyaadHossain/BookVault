@@ -15,17 +15,17 @@ const reviewApi = api.injectEndpoints({
       providesTags: ["Reviews"],
     }),
     updateReview: builder.mutation({
-      query: ({ id, email, data }) => ({
+      query: ({ id, email, review }) => ({
         url: `/review/${id}/user/${email}`,
         method: "PATCH",
-        body: data,
+        body: { review },
       }),
       invalidatesTags: ["Reviews"],
     }),
     deleteReview: builder.mutation({
       query: ({ id, email }) => ({
         url: `/review/${id}/user/${email}`,
-        method: "DELETE"
+        method: "DELETE",
       }),
       invalidatesTags: ["Reviews"],
     }),
