@@ -5,6 +5,7 @@ export default function Reviews() {
   return (
     <div>
       <h4 className="text-lg font-semibold">User Reviews:</h4>
+      <div className="bg-neutral h-[0.5px]" />
       <div className="mt-3">
         <div className="flex gap-3 items-end">
           <textarea

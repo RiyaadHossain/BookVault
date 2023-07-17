@@ -6,29 +6,41 @@ import {
 } from "../redux/features/book/bookApi";
 import { useForm } from "react-hook-form";
 import { IBook } from "../types/interface";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function UpdateBook() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: book } = useGetBookQuery(id!);
-  const [updateBook /*, {  isError, isLoading, isSuccess  }*/] =
+  const [updateBook, { isError, /*isLoading,*/ isSuccess }] =
     useUpdateBookMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<IBook>();
 
   const onSubmit = (data: IBook) => {
     const payload = { id, data };
     updateBook(payload);
-    reset();
+
     setTimeout(() => {
       navigate("/all-books");
-    }, 1000);
+    }, 1500);
   };
+
+  useEffect(() => {
+    if (isSuccess)
+      toast.success(`Successfully updated book: ${book.title}`, {
+        id: "success",
+      });
+    if (isError)
+      toast.error(`Failed to updated book: ${book.title}`, {
+        id: "err",
+      });
+  }, [isSuccess, isError]);
 
   return (
     <div className="page_main">
@@ -44,11 +56,8 @@ export default function UpdateBook() {
               defaultValue={book?.title}
               placeholder="Paramoy Life"
               className="input input-bordered"
-              {...register("title", { required: "Title is required" })}
+              {...register("title")}
             />
-            {errors.title && (
-              <p className="form_error">{errors.title.message}</p>
-            )}
           </div>
           <div className="form-control">
             <label className="label">
@@ -59,11 +68,8 @@ export default function UpdateBook() {
               defaultValue={book?.author}
               placeholder="Jhankar Mahbub"
               className="input input-bordered"
-              {...register("author", { required: "Author is required" })}
+              {...register("author")}
             />
-            {errors.author && (
-              <p className="form_error">{errors.author.message}</p>
-            )}
           </div>
           <div className="form-control">
             <label className="label">
@@ -72,7 +78,7 @@ export default function UpdateBook() {
             <select
               defaultValue={book?.genre}
               className="select w-full max-w-xs"
-              {...register("genre", { required: "Genre is required" })}
+              {...register("genre")}
             >
               <option selected>Self-Help</option>
               <option>Fiction</option>
@@ -83,9 +89,6 @@ export default function UpdateBook() {
               <option>Classic</option>
               <option>Sci-Fi</option>
             </select>
-            {errors.genre && (
-              <p className="form_error">{errors.genre.message}</p>
-            )}
           </div>
           <div className="form-control">
             <label className="label">

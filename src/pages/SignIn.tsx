@@ -10,8 +10,8 @@ export default function SignIn() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const path = location?.state?.path?.pathname || "/";
-
+  const path = location.state?.path?.pathname || "/";
+  console.log(location.state);
   const { user } = useAppSelector((state) => state.user);
 
   useEffect(() => {

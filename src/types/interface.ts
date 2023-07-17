@@ -6,3 +6,8 @@ export interface IBook {
   publicationDate: string;
   addedBy: string | null;
 }
+
+export interface IWishlist {
+  email: string
+  books: IBook[]
+}

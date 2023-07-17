@@ -52,9 +52,7 @@ export default function BookCard({ book }: { book: IBook }) {
           </div>
         </div>
       </div>
-      {showModal && (
-        <DeleteModal book={book} setShowModal={setShowModal} />
-      )}
+      {showModal && <DeleteModal book={book} setShowModal={setShowModal} />}
     </>
   );
 }

@@ -1,10 +1,18 @@
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Reviews from "../components/ui/Reviews";
 import { useGetBookQuery } from "../redux/features/book/bookApi";
+import { FaDeleteLeft, FaPencil } from "react-icons/fa6";
+import { useAppSelector } from "../redux/hook";
+import DeleteModal from "../components/ui/DeleteModal";
 
 export default function BookDetails() {
+  const [showModal, setShowModal] = useState(false);
+
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data: book } = useGetBookQuery(id!);
+  const { user } = useAppSelector((state) => state.user);
 
   return (
     <div className="page_main">
@@ -24,13 +32,34 @@ export default function BookDetails() {
             </span>
           </h4>
           <span className="badge badge-info">{book?.genre}</span>
-          <p className="text-sm my-2">
-            <span className="font-semibold">Publication Date: </span>
+          <p className="text-sm mt-2">
+            <span className="font-semibold">Published On: </span>
             {book?.publicationDate}
           </p>
         </div>
+        {user.email === book?.addedBy && (
+          <div className="flex items-center gap-x-2">
+            <h4 className="font-semibold">Action Center :</h4>
+            <button
+              onClick={() => navigate(`/update-book/${book._id}`)}
+              className="btn btn-sm bg-cyan-700 tooltip"
+              data-tip="Update Book"
+            >
+              <FaPencil />
+            </button>
+            <button
+              onClick={() => setShowModal(!showModal)}
+              className="btn btn-sm bg-red-700 tooltip"
+              data-tip="Delete Book"
+            >
+              <FaDeleteLeft className="" />
+            </button>
+          </div>
+        )}
       </div>
+
       <Reviews />
+      {showModal && <DeleteModal book={book} setShowModal={setShowModal} />}
     </div>
   );
 }

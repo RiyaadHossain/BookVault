@@ -3,9 +3,12 @@ import PreviousBtn from "../components/reuseable/PreviousBtn";
 import { useAppSelector } from "../redux/hook";
 import { IBook } from "../types/interface";
 import { usePostBookMutation } from "../redux/features/book/bookApi";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function AddBook() {
-  const [addBook /*, {  isError, isLoading, isSuccess  }*/] = usePostBookMutation();
+  const [addBook, { isSuccess, isError /* isLoading */ }] =
+    usePostBookMutation();
   const { user } = useAppSelector((state) => state.user);
 
   const {
@@ -16,10 +19,16 @@ export default function AddBook() {
   } = useForm<IBook>();
 
   const onSubmit = (data: IBook) => {
-    const payload = {...data, addedBy: user.email}
+    const payload = { ...data, addedBy: user.email };
     addBook(payload);
     reset();
   };
+
+  useEffect(() => {
+    if (isSuccess)
+      toast.success("Successfully added the book 📘", { id: "addBook" });
+    if (isError) toast.error("Something went wrong 😔", { id: "error" });
+  }, [isSuccess, isError]);
 
   return (
     <div className="page_main">

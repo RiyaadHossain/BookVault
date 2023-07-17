@@ -2,10 +2,13 @@ import { useNavigate } from "react-router-dom";
 import BookCardWithImg from "../reuseable/BookCardWithImg";
 import { useGetAllBooksQuery } from "../../redux/features/book/bookApi";
 import { IBook } from "../../types/interface";
+import Loading from "../reuseable/Loading";
 
 export default function BookList() {
-  const { data } = useGetAllBooksQuery(undefined);
+  const { data, isLoading } = useGetAllBooksQuery(undefined);
   const navigate = useNavigate();
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="_section">
