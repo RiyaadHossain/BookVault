@@ -1,5 +1,7 @@
+import toast from "react-hot-toast";
 import { useDeleteBookMutation } from "../../redux/features/book/bookApi";
 import { IBook } from "../../types/interface";
+import { useNavigate } from "react-router-dom";
 
 interface IDeleteModalProps {
   book: IBook;
@@ -8,10 +10,16 @@ interface IDeleteModalProps {
 
 export default function DeleteModal({ book, setShowModal }: IDeleteModalProps) {
   const [deleteBook] = useDeleteBookMutation();
+  const navigate = useNavigate();
 
   const onDeleteBook = () => {
     deleteBook(book._id);
     setShowModal(false);
+
+    toast.success(`Successfully, deleted the book ${book.title}`);
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
   };
 
   return (
