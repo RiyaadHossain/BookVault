@@ -25,9 +25,15 @@ export default function AllBooks() {
   bookContent = books
     ?.filter((book: IBook) => {
       if (keyword) {
-        return book.title
-          .toLocaleLowerCase()
-          .includes(keyword.toLocaleLowerCase());
+        return (
+          book.title
+            .toLocaleLowerCase()
+            .includes(keyword.toLocaleLowerCase()) ||
+          book.author
+            .toLocaleLowerCase()
+            .includes(keyword.toLocaleLowerCase()) ||
+          book.genre.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
+        );
       }
       return book;
     })
@@ -36,7 +42,7 @@ export default function AllBooks() {
       return book;
     });
 
-/*   const onSearch = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  /*   const onSearch = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSearchFilter((prevFilter) => ({
       ...prevFilter,
       keyword: e.target.value,

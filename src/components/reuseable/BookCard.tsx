@@ -67,7 +67,10 @@ export default function BookCard({ book }: { book: IBook }) {
   const readinglisted = readinglists?.readingPlan?.find(
     (readinglist: IBook) => readinglist?._id === book?._id
   );
-  const verifiedUser = user?.email && book?.addedBy === user?.email;
+
+
+  const verifiedUser = user?.email
+  const publisher = user?.email && book?.addedBy === user?.email;
 
   return (
     <>
@@ -91,7 +94,7 @@ export default function BookCard({ book }: { book: IBook }) {
                 )}
               </button>
             </div>
-          )}
+           )} 
           <div className="badge badge-sm badge-secondary">{book?.author}</div>
           <p className="font-light">
             <span className="font-semibold">Publication Date:</span>{" "}
@@ -99,7 +102,7 @@ export default function BookCard({ book }: { book: IBook }) {
           </p>
           <div className="badge badge-sm badge-outline">{book?.genre}</div>
 
-          {verifiedUser && (
+          {publisher && (
             <div className="card-actions justify-between items-center">
               <div className="flex items-center gap-2">
                 <button
